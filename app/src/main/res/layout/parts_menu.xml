@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:elevation="4dp"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <!-- Name of the Car Part -->
+    <TextView
+        android:id="@+id/tvCarPartMenu"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:paddingBottom="4dp"
+        android:text="Car Part Menu"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
 
 </LinearLayout>

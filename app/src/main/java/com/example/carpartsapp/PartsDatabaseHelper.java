@@ -1,8 +1,12 @@
 package com.example.carpartsapp;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
+
+import java.util.ArrayList;
 
 public class PartsDatabaseHelper extends SQLiteOpenHelper {
 
@@ -15,7 +19,6 @@ public class PartsDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_DISTRIBUTOR = "distributor";
     private static final String COLUMN_DESCRIPTION = "description";
     private static final String COLUMN_PRICE = "price";
-
 
 
     public PartsDatabaseHelper(Context context) {
@@ -40,6 +43,4 @@ public class PartsDatabaseHelper extends SQLiteOpenHelper {
 
 
     }
-
 }
-
