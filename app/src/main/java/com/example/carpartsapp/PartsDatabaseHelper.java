@@ -43,4 +43,66 @@ public class PartsDatabaseHelper extends SQLiteOpenHelper {
 
 
     }
+
+    public long insertPart(String name, String distributor, String description, double price) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME, name);
+        values.put(COLUMN_DISTRIBUTOR, distributor);
+        values.put(COLUMN_DESCRIPTION, description);
+        values.put(COLUMN_PRICE, price);
+
+        return db.insert(TABLE_PARTS, null, values); // Returns the row ID of the newly inserted row
+    }
+
+
+    public ArrayList<String> getAllParts() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<String> partsList = new ArrayList<>();
+        String selectQuery = "SELECT * FROM " + TABLE_PARTS;
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    int columnIndex = cursor.getColumnIndex(COLUMN_NAME);
+                    if (columnIndex != -1) {
+                        String partName = cursor.getString(columnIndex);
+                        partsList.add(partName);
+                    }
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        }
+        return partsList;
+    }
+
+
+    public Cursor getPartById(int partId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT * FROM " + TABLE_PARTS + " WHERE " + COLUMN_ID + " = ?";
+        return db.rawQuery(selectQuery, new String[]{String.valueOf(partId)});
+    }
+
+
+    public void deletePart(int partId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_PARTS, COLUMN_ID + " = ?", new String[]{String.valueOf(partId)});
+    }
+
+
+    public int updatePart(int partId, String name, String distributor, String description, double price) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME, name);
+        values.put(COLUMN_DISTRIBUTOR, distributor);
+        values.put(COLUMN_DESCRIPTION, description);
+        values.put(COLUMN_PRICE, price);
+
+        return db.update(TABLE_PARTS, values, COLUMN_ID + " = ?", new String[]{String.valueOf(partId)});
+    }
+
+
+
+
 }
