@@ -34,12 +34,32 @@ public class PartsDatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_DESCRIPTION + " TEXT," +
                 COLUMN_PRICE + " REAL)";
         db.execSQL(createTable);
+        insertInitialData(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PARTS);
         onCreate(db);
+    }
+
+    private void insertInitialData(SQLiteDatabase db) {
+        ContentValues values = new ContentValues();
+
+        // Example data
+        Object[][] initialParts = {
+                {"Motor", "Toyota", "Good motor", "300.96"},
+                {"Engine Oil", "Car Supplies Co.", "High-quality synthetic engine oil", "29.99"}
+        };
+
+        for (Object[] part : initialParts) {
+            values.clear();
+            values.put(COLUMN_NAME, (String) part[0]);
+            values.put(COLUMN_DISTRIBUTOR, (String) part[1]);
+            values.put(COLUMN_DESCRIPTION, (String) part[2]);
+            values.put(COLUMN_PRICE, (String) part[3]);
+            db.insert(TABLE_PARTS, null, values);
+        }
     }
 
     public ArrayList<String> getAllParts() {
@@ -53,13 +73,15 @@ public class PartsDatabaseHelper extends SQLiteOpenHelper {
                 do {
                     int idIndex = cursor.getColumnIndex(COLUMN_ID);
                     int nameIndex = cursor.getColumnIndex(COLUMN_NAME);
+                    int priceIndex = cursor.getColumnIndex((COLUMN_PRICE));
 
-                    if (idIndex != -1 && nameIndex != -1) {
+                    if (idIndex != -1 && nameIndex != -1 && priceIndex != -1) {
                         int partId = cursor.getInt(idIndex);
                         String partName = cursor.getString(nameIndex);
+                        String partPrice = cursor.getString(priceIndex);
 
                         // Combine ID and Name into a single string
-                        String partEntry = "ID: " + partId + " " + partName;
+                        String partEntry = "ID: " + partId + " " + partName + " - $" + partPrice;
                         partsList.add(partEntry);
                     }
                 } while (cursor.moveToNext());

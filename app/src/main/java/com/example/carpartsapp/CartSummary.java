@@ -33,7 +33,7 @@ public class CartSummary extends AppCompatActivity {
         String totalCostSt = (String.format("%.02f", totalCost));
 
         selectedParts_tv.setText("Selected Items: \n" + selectedItems);
-        totalCost_tv.setText("Total Cost: \n" + totalCostSt);
+        totalCost_tv.setText("Total Cost: \n$ " + totalCostSt);
 
         backToMenu_btn.setOnClickListener(new View.OnClickListener() {
             @Override

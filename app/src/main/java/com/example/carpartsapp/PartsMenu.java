@@ -80,8 +80,6 @@ public class PartsMenu extends AppCompatActivity {
             }
         });
 
-        //insertPart("Motor", "Toyota", "Good motor", 300.96F);
-
         // Example: Insert a part into the database
         //insertPart("Engine Oil", "Car Supplies Co.", "High-quality synthetic engine oil", 29.99F);
         /*
@@ -107,11 +105,6 @@ public class PartsMenu extends AppCompatActivity {
         values.put("price", price);
 
         long result = partsDb.getWritableDatabase().insert("Parts", null, values);
-        if (result == -1) {
-            Toast.makeText(this, "Failed to insert part", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Part inserted successfully", Toast.LENGTH_SHORT).show();
-        }
     }
 
     // Method to update an existing part in the database
