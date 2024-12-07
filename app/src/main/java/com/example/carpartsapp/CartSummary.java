@@ -28,10 +28,12 @@ public class CartSummary extends AppCompatActivity {
         backToMenu_btn = findViewById(R.id.backToMenu_btn);
 
         String selectedItems = sharedPreferences.getString("selectedItems", "");
-        String totalCost = sharedPreferences.getString("totalCost", "");
+        float totalCost = sharedPreferences.getFloat("totalCost", 0);
+
+        String totalCostSt = (String.format("%.02f", totalCost));
 
         selectedParts_tv.setText("Selected Items: \n" + selectedItems);
-        totalCost_tv.setText("Total Cost: \n" + totalCost);
+        totalCost_tv.setText("Total Cost: \n" + totalCostSt);
 
         backToMenu_btn.setOnClickListener(new View.OnClickListener() {
             @Override

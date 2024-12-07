@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#009688"
+    android:background="#2196F3"
     android:orientation="vertical">
 
     <TextView
@@ -11,8 +11,8 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="Car Parts Cart "
-        android:textColor="#F6B7B7"
-        android:textSize="24sp"
+        android:textColor="#FFFDFD"
+        android:textSize="34sp"
         android:textStyle="bold" />
 
     <View
@@ -26,22 +26,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Parts Picked: "
-        android:textColor="#050505"
-        android:textSize="18sp" />
+        android:textColor="#F8F6F6"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/totalCost_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Total: "
-        android:textColor="#0D0D0D"
-        android:textSize="18sp" />
+        android:textColor="#FAFAFA"
+        android:textSize="20sp" />
 
-    <Button
-        android:id="@+id/backToMenu_btn"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#F6B7B7"
-        android:text="Back to Part Selection"
-        android:textColor="#090909" />
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/backToMenu_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#673AB7"
+            android:text="Back to Part Selection"
+            android:textColor="#FAF7F7"
+            android:textSize="34sp" />
+    </LinearLayout>
 </LinearLayout>

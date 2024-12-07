@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:elevation="4dp"
     android:orientation="vertical"
     android:padding="8dp">
@@ -13,8 +13,52 @@
         android:layout_height="46dp"
         android:paddingBottom="4dp"
         android:text="Car Part Menu"
-        android:textSize="18sp"
+        android:textAlignment="center"
+        android:textColor="#2196F3"
+        android:textSize="30sp"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textViewParts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/buttonDisplay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Display All Parts"
+        android:textSize="25sp" />
+
+    <EditText
+        android:id="@+id/editTextAddPart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Enter Part ID"
+        android:inputType="text" />
+
+    <Button
+        android:id="@+id/buttonAddCart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add to Cart"
+        android:textSize="25sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/buttonDisplayCart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Display Cart"
+            android:textSize="25sp" />
+    </LinearLayout>
 
 
 </LinearLayout>

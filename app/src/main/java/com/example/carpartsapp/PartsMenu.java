@@ -1,8 +1,13 @@
 package com.example.carpartsapp;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +20,11 @@ import android.database.sqlite.SQLiteDatabase;
 public class PartsMenu extends AppCompatActivity {
     PartsDatabaseHelper partsDb;
     private SharedPreferences sharedPreferences;
+    private TextView textViewParts;
+    private Button buttonDisplay, buttonAddCart, buttonDisplayCart;
+    private EditText editTextAddPart;
+    private String selectedParts = "";
+    private float totalPrice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,9 +37,54 @@ public class PartsMenu extends AppCompatActivity {
         // Initialize SharedPreferences
         sharedPreferences = getSharedPreferences("CartSummary", MODE_PRIVATE);
 
-        // Example: Insert a part into the database
-        insertPart("Engine Oil", "Car Supplies Co.", "High-quality synthetic engine oil", 29.99);
+        // Initialize buttons/text fields
+        textViewParts = findViewById(R.id.textViewParts);
+        buttonDisplay = findViewById(R.id.buttonDisplay);
+        buttonAddCart = findViewById(R.id.buttonAddCart);
+        buttonDisplayCart = findViewById(R.id.buttonDisplayCart);
+        editTextAddPart = findViewById(R.id.editTextAddPart);
 
+        buttonDisplay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ArrayList<String> partsList = partsDb.getAllParts();
+                String allParts = "";
+                for (String part : partsList) {
+                    allParts += part + "\n";
+                }
+                textViewParts.setText(allParts);
+            }
+        });
+
+        buttonAddCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String addPartID = editTextAddPart.getText().toString();
+                String addPart = partsDb.getPartById(Integer.parseInt(addPartID));
+                float addPartPrice = partsDb.getPriceById(Integer.parseInt(addPartID));
+
+                if (addPart != null) {
+                    selectedParts += addPart + "\n";
+                    totalPrice += addPartPrice;
+                    Toast.makeText(PartsMenu.this, "Part added to cart!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(PartsMenu.this, "Failed to add part to cart.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        buttonDisplayCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                displayCart();
+            }
+        });
+
+        insertPart("Motor", "Toyota", "Good motor", 300.96F);
+
+        // Example: Insert a part into the database
+        insertPart("Engine Oil", "Car Supplies Co.", "High-quality synthetic engine oil", 29.99F);
+        /*
         // Example: Retrieve all parts from the database
         ArrayList<String> partsList = getAllParts();
         for (String part : partsList) {
@@ -40,11 +95,11 @@ public class PartsMenu extends AppCompatActivity {
         updatePart(1, "Updated Engine Oil", "Updated Distributor", "Updated Description", 34.99);
 
         // Example: Delete a part
-        deletePart(1);
+        deletePart(1);*/
     }
 
     // Method to insert a new part into the database
-    private void insertPart(String name, String distributor, String description, double price) {
+    private void insertPart(String name, String distributor, String description, float price) {
         ContentValues values = new ContentValues();
         values.put("name", name);
         values.put("distributor", distributor);
@@ -57,28 +112,6 @@ public class PartsMenu extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Part inserted successfully", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    // Method to get all parts from the database
-    private ArrayList<String> getAllParts() {
-        ArrayList<String> partsList = new ArrayList<>();
-        String selectQuery = "SELECT * FROM Parts";
-        Cursor cursor = partsDb.getReadableDatabase().rawQuery(selectQuery, null);
-
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                do {
-                    // Ensure column "name" exists in your table schema
-                    int columnIndex = cursor.getColumnIndex("name");
-                    if (columnIndex != -1) {
-                        String partName = cursor.getString(columnIndex);
-                        partsList.add(partName);
-                    }
-                } while (cursor.moveToNext());
-            }
-            cursor.close();
-        }
-        return partsList;
     }
 
     // Method to update an existing part in the database
@@ -105,5 +138,19 @@ public class PartsMenu extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Failed to delete part", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void saveCartToSavedPreferences(String selectedItems, float totalCost) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("selectedItems", selectedItems);
+        editor.putFloat("totalCost", totalCost);
+        editor.apply();
+    }
+
+    private void displayCart() {
+        saveCartToSavedPreferences(selectedParts, totalPrice);
+
+        Intent intent = new Intent(PartsMenu.this, CartSummary.class);
+        startActivity(intent);
     }
 }

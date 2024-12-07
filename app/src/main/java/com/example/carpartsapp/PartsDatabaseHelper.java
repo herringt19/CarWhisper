@@ -40,21 +40,7 @@ public class PartsDatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PARTS);
         onCreate(db);
-
-
     }
-
-    public long insertPart(String name, String distributor, String description, double price) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_NAME, name);
-        values.put(COLUMN_DISTRIBUTOR, distributor);
-        values.put(COLUMN_DESCRIPTION, description);
-        values.put(COLUMN_PRICE, price);
-
-        return db.insert(TABLE_PARTS, null, values); // Returns the row ID of the newly inserted row
-    }
-
 
     public ArrayList<String> getAllParts() {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -65,10 +51,16 @@ public class PartsDatabaseHelper extends SQLiteOpenHelper {
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
-                    int columnIndex = cursor.getColumnIndex(COLUMN_NAME);
-                    if (columnIndex != -1) {
-                        String partName = cursor.getString(columnIndex);
-                        partsList.add(partName);
+                    int idIndex = cursor.getColumnIndex(COLUMN_ID);
+                    int nameIndex = cursor.getColumnIndex(COLUMN_NAME);
+
+                    if (idIndex != -1 && nameIndex != -1) {
+                        int partId = cursor.getInt(idIndex);
+                        String partName = cursor.getString(nameIndex);
+
+                        // Combine ID and Name into a single string
+                        String partEntry = "ID: " + partId + " " + partName;
+                        partsList.add(partEntry);
                     }
                 } while (cursor.moveToNext());
             }
@@ -77,32 +69,42 @@ public class PartsDatabaseHelper extends SQLiteOpenHelper {
         return partsList;
     }
 
-
-    public Cursor getPartById(int partId) {
+    public String getPartById(int partId) {
         SQLiteDatabase db = this.getReadableDatabase();
+        String part = null;
+
         String selectQuery = "SELECT * FROM " + TABLE_PARTS + " WHERE " + COLUMN_ID + " = ?";
-        return db.rawQuery(selectQuery, new String[]{String.valueOf(partId)});
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(partId)});
+
+        if(cursor != null) {
+            if (cursor.moveToFirst()) {
+                part = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME));
+            }
+            cursor.close();
+        }
+        db.close();
+        return part;
     }
 
+    public float getPriceById(int partId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String priceSt = null;
+        float price = 0;
 
-    public void deletePart(int partId) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_PARTS, COLUMN_ID + " = ?", new String[]{String.valueOf(partId)});
+        String selectQuery = "SELECT * FROM " + TABLE_PARTS + " WHERE " + COLUMN_ID + " = ?";
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(partId)});
+
+        if(cursor != null) {
+            if (cursor.moveToFirst()) {
+                priceSt = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PRICE));
+            }
+            cursor.close();
+        }
+        db.close();
+
+        if (priceSt != null) {
+            price = Float.parseFloat(priceSt);
+        }
+        return price;
     }
-
-
-    public int updatePart(int partId, String name, String distributor, String description, double price) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_NAME, name);
-        values.put(COLUMN_DISTRIBUTOR, distributor);
-        values.put(COLUMN_DESCRIPTION, description);
-        values.put(COLUMN_PRICE, price);
-
-        return db.update(TABLE_PARTS, values, COLUMN_ID + " = ?", new String[]{String.valueOf(partId)});
-    }
-
-
-
-
 }
