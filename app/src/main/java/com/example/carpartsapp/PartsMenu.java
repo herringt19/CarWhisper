@@ -80,10 +80,10 @@ public class PartsMenu extends AppCompatActivity {
             }
         });
 
-        insertPart("Motor", "Toyota", "Good motor", 300.96F);
+        //insertPart("Motor", "Toyota", "Good motor", 300.96F);
 
         // Example: Insert a part into the database
-        insertPart("Engine Oil", "Car Supplies Co.", "High-quality synthetic engine oil", 29.99F);
+        //insertPart("Engine Oil", "Car Supplies Co.", "High-quality synthetic engine oil", 29.99F);
         /*
         // Example: Retrieve all parts from the database
         ArrayList<String> partsList = getAllParts();
