@@ -49,7 +49,15 @@ public class PartsDatabaseHelper extends SQLiteOpenHelper {
         // Example data
         Object[][] initialParts = {
                 {"Motor", "Toyota", "Good motor", "300.96"},
-                {"Engine Oil", "Car Supplies Co.", "High-quality synthetic engine oil", "29.99"}
+                {"Engine Oil", "Car Supplies Co.", "High-quality synthetic engine oil", "29.99"},
+                {"Rubber Rings", "Elastic Enterprise", "Shock adsorbent tires", "44.99"},
+                {"Titanium Rear", "Cold Stone's Body Shop", "Heavy resistant tailgate", "140.50"},
+                {"Bass Busters", "Radical Radio", "Subwoofers", "99.99"},
+                {"Water Bouncer", "Crystal Clear Windows", "Windshield wipers", "11.99"},
+                {"Rolling Cleats", "Outback Auto", "Off-Road tires", "51.99"},
+                {"Zeppelin's Pillow", "Safety First Co.", "Thick airbag", "77.99"},
+                {"The Truck's Shed", "Uncle Ed's Cars", "Heavy duty toolbox", "60.99"},
+                {"Shiny Domes", "Regal Rims", "Chrome rims", "80.99"}
         };
 
         for (Object[] part : initialParts) {
